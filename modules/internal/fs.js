@@ -1,5 +1,5 @@
 import { validateFunction, validateInteger, validateBoolean } from "../internal/validators"
-import { getValidatedPath, getValidMode, Stats, validateBufferArray, validateEncoding, stringToFlags } from "../internal/fs/utils"
+import { getValidatedPath, getValidMode, Stats as UtilStats, validateBufferArray, validateEncoding, stringToFlags } from "../internal/fs/utils"
 import * as binding from "_node:fs"
 import * as errors from "../internal/errors"
 import { hideStackFrames } from "../internal/errors"

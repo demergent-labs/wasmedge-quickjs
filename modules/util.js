@@ -1,13 +1,13 @@
-import { promisify, deprecate } from "./internal/util.js";
-import { debuglog } from "./internal/util/debuglog.js";
+import { promisify as UtilPromisify, deprecate as UtilDeprecate } from "./internal/util.js";
+import { debuglog as UtilDebugLog } from "./internal/util/debuglog.js";
 import types from "util/types";
 import { Buffer } from "buffer";
 import { ERR_INVALID_ARG_TYPE } from "./internal/errors.js";
 import * as encoding from 'encoding';
 
-export const debuglog = debuglog
-export const promisify = promisify;
-export const deprecate = deprecate;
+export const debuglog = UtilDebugLog
+export const promisify = UtilPromisify;
+export const deprecate = UtilDeprecate;
 
 class NodeFalsyValueRejectionError extends Error {
     reason;
