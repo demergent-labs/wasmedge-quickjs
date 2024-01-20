@@ -585,7 +585,7 @@ export class IncomingMessageForServer extends Readable {
     }
 }
 
-class HttpConn {
+export class HttpConn {
 
     #chunk = undefined;
     #connection = 'close';
@@ -642,7 +642,24 @@ class HttpConn {
         resp.headers = resp_header.headers;
         resp.status = resp_header.status;
         resp.statusText = resp_header.statusText;
-        this.socket.write(resp.encode(body))
+        // this.socket.write(resp.encode(body))
+
+        globalThis._azleExportedIc.reply(
+            {
+                status_code: resp.status,
+                headers: Object.entries(resp.headers).map(
+                    (entry) => entry
+                ),
+                body: new Uint8Array(body),
+                streaming_strategy: {
+                    None: null
+                },
+                upgrade: {
+                    None: null
+                }
+            },
+            globalThis._azleHttpResponse
+        );
     }
 
     chunk(resp_header) {
@@ -745,6 +762,8 @@ class ServerImpl extends EventEmitter {
     }
 
     listen(...args) {
+        globalThis._azleServer = this;
+        
         // TODO(bnoordhuis) Delegate to net.Server#listen().
         const normalized = _normalizeArgs(args);
         const options = normalized[0];
@@ -765,9 +784,10 @@ class ServerImpl extends EventEmitter {
         // we on the other hand default to 0.0.0.0.
         // const hostname = options.host ?? "";
 
-        this.#listener = new net.WasiTcpServer(port);
-        this.#listening = true;
-        this.#listenLoop();
+        // this.#listener = new net.WasiTcpServer(port);
+        // this.#listener = new globalThis._azleTcpServer();
+        // this.#listening = true;
+        // this.#listenLoop();
 
         return this;
     }
