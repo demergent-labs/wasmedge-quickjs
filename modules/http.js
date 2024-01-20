@@ -762,8 +762,6 @@ class ServerImpl extends EventEmitter {
     }
 
     listen(...args) {
-        globalThis._azleServer = this;
-        
         // TODO(bnoordhuis) Delegate to net.Server#listen().
         const normalized = _normalizeArgs(args);
         const options = normalized[0];
