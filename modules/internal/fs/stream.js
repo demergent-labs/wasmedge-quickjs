@@ -5,7 +5,7 @@ import { Writable, Readable } from "stream";
 import { validateEncoding } from "./utils";
 import { URL } from "url";
 import { toPathIfFileURL } from "../url";
-import fs, { open, write, close, statSync } from "../../fs";
+import fs, { open, write, close, statSync, FileHandle } from "../../fs";
 import { validateInteger, validateObject } from "../validators";
 import { nextTick } from "../../process";
 
@@ -198,16 +198,18 @@ export class ReadStream extends Readable {
             emitClose: true,
             objectMode: false,
             read: async function (_size) {
+                opts = typeof opts !== 'object' ? {} : opts;
+
                 try {
                     if (this.file === undefined) {
                         if (opts.fd) {
                             if (opts.fd instanceof fs.FileHandle) {
                                 this.file = opts.fd;
                             } else {
-                                this.file = new fs.FileHandle(opts.fd, path);
+                                this.file = new FileHandle(opts.fd, path);
                             }
                         } else {
-                            this.file = new fs.FileHandle(fs.openSync(path, fs.constants.O_RDONLY), path);
+                            this.file = new FileHandle(fs.openSync(path, fs.constants.O_RDONLY), path);
                             notClose = false;
                         }
                         this.pending = false;

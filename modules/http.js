@@ -418,6 +418,7 @@ export class ServerResponse extends Writable {
     #conn;
     #firstChunk = null;
     #_end = false;
+    finished = false;
 
     constructor(conn) {
         super({
@@ -491,6 +492,10 @@ export class ServerResponse extends Writable {
         return this;
     }
 
+    getHeaders() {
+        return this.#headers;
+    }
+
     #ensureHeaders(singleChunk) {
         if (this.statusCode === undefined) {
             this.statusCode = 200;
@@ -511,7 +516,7 @@ export class ServerResponse extends Writable {
                 headers: this.#headers,
                 status: this.statusCode,
                 statusText: this.statusMessage,
-            }
+            }, final
             ).catch(() => {
                 // ignore this error
             });
@@ -630,7 +635,7 @@ export class HttpConn {
         }
     }
 
-    respondWith(body, resp_header) {
+    respondWith(body, resp_header, final) {
         if (!this.socket) {
             return
         }
@@ -642,24 +647,11 @@ export class HttpConn {
         resp.headers = resp_header.headers;
         resp.status = resp_header.status;
         resp.statusText = resp_header.statusText;
-        // this.socket.write(resp.encode(body))
+        this.socket.write(resp.encode(body))
 
-        globalThis._azleExportedIc.reply(
-            {
-                status_code: resp.status,
-                headers: Object.entries(resp.headers).map(
-                    (entry) => entry
-                ),
-                body: new Uint8Array(body),
-                streaming_strategy: {
-                    None: null
-                },
-                upgrade: {
-                    None: null
-                }
-            },
-            globalThis._azleHttpResponse
-        );
+        if (final === true) {
+            this.socket.end('0\r\n\r\n');
+        }
     }
 
     chunk(resp_header) {

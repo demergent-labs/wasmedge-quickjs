@@ -180,7 +180,7 @@ mod tests {
         let r = HttpRequest::parse(s.as_bytes());
         println!("{:?}", r);
         let req = r.unwrap();
-        assert_eq!(Method::Post, req.method);
+        assert_eq!(Method::POST, req.method);
         assert_eq!(Version::V1_1, req.version);
         assert_eq!(Resource::Path("/greeting".to_string()), req.resource);
         assert_eq!(headers_expected, req.headers);
@@ -190,7 +190,7 @@ mod tests {
     #[test]
     fn test_display_http() {
         let req = HttpRequest {
-            method: Method::Get,
+            method: Method::GET,
             version: Version::V1_0,
             resource: Resource::Path("/abc".to_string()),
             headers: {

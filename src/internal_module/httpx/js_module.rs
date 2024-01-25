@@ -321,7 +321,7 @@ impl JsClassDef for HttpRequest {
         use super::core::request;
         use super::core::*;
         Ok(HttpRequest {
-            method: Method::Get,
+            method: Method::GET,
             version: Version::V1_0,
             resource: request::Resource::Path(Default::default()),
             headers: Default::default(),

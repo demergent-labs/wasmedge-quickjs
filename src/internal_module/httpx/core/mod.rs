@@ -9,15 +9,15 @@ pub mod response;
 /// Http method
 #[derive(Debug, PartialEq, Clone)]
 pub enum Method {
-    Get,
-    Post,
-    Head,
-    Put,
-    Delete,
-    Connect,
-    Options,
-    Trace,
-    Patch,
+    GET,
+    POST,
+    HEAD,
+    PUT,
+    DELETE,
+    CONNECT,
+    OPTIONS,
+    TRACE,
+    PATCH,
 }
 
 impl Display for Method {
@@ -31,15 +31,15 @@ impl FromStr for Method {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "GET" => Ok(Method::Get),
-            "POST" => Ok(Method::Post),
-            "PUT" => Ok(Method::Put),
-            "DELETE" => Ok(Method::Delete),
-            "CONNECT" => Ok(Method::Connect),
-            "HEAD" => Ok(Method::Head),
-            "OPTIONS" => Ok(Method::Options),
-            "TRACE" => Ok(Method::Trace),
-            "PATCH" => Ok(Method::Patch),
+            "GET" => Ok(Method::GET),
+            "POST" => Ok(Method::POST),
+            "PUT" => Ok(Method::PUT),
+            "DELETE" => Ok(Method::DELETE),
+            "CONNECT" => Ok(Method::CONNECT),
+            "HEAD" => Ok(Method::HEAD),
+            "OPTIONS" => Ok(Method::OPTIONS),
+            "TRACE" => Ok(Method::TRACE),
+            "PATCH" => Ok(Method::PATCH),
             _ => Err(ParseError::InvalidMethod),
         }
     }
