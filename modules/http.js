@@ -567,7 +567,13 @@ export class IncomingMessageForServer extends Readable {
                 }
             },
             destroy: (err, cb) => {
-                conn.close();
+                // TODO https://github.com/second-state/wasmedge-quickjs/issues/131
+                // TODO with autoDestroy this method will be called
+                // TODO after using express.text() or express.json()
+                // TODO if you await anything in your middleware callback
+                // TODO I assume because on the next tick or whatever
+                // TODO this method is then called, thus killing the http connection
+                // conn.close();
                 cb(err);
             },
         });
