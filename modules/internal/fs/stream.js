@@ -217,7 +217,10 @@ export class ReadStream extends Readable {
                     }
                     opts.end = opts.end ?? fs.fstatSync(this.file.fd).size;
                     opts.start = opts.start ?? 0;
-                    const { bytesRead: n } = await this.file.read(buffer, 0, opts.end - opts.start - curPos + 1, curPos === 0 ? opts.start : -1);
+
+                    const preLength = opts.end - opts.start - curPos + 1;
+
+                    const { bytesRead: n } = await this.file.read(buffer, 0, preLength > buffer.byteLength ? buffer.byteLength : preLength, curPos === 0 ? opts.start : curPos);
                     curPos += n;
                     if (n === 0) {
                         this.emit("end");
