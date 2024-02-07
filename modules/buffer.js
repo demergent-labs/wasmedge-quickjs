@@ -2323,6 +2323,7 @@ var exports = dew();
 exports['Buffer']; exports['SlowBuffer']; exports['INSPECT_MAX_BYTES']; exports['kMaxLength'];
 
 var Buffer = exports.Buffer;
+var SlowBuffer = exports.SlowBuffer;
 var INSPECT_MAX_BYTES = exports.INSPECT_MAX_BYTES;
 var kMaxLength = exports.kMaxLength;
 
@@ -2337,4 +2338,4 @@ class FastBuffer extends Uint8Array {
   }
 }
 
-export { Buffer, INSPECT_MAX_BYTES, exports as default, kMaxLength, FastBuffer };
+export { Buffer, INSPECT_MAX_BYTES, exports as default, kMaxLength, FastBuffer, SlowBuffer };
