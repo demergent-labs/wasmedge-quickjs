@@ -220,15 +220,16 @@ export class ReadStream extends Readable {
 
                     const preLength = opts.end - opts.start - curPos + 1;
 
-                    const { bytesRead: n } = await this.file.read(buffer, 0, preLength > buffer.byteLength ? buffer.byteLength : preLength, curPos === 0 ? opts.start : curPos);
+                    const { bytesRead: n } = await this.file.read(buffer, 0, preLength > buffer.byteLength ? buffer.byteLength : preLength, curPos === 0 ? opts.start : opts.start + curPos);
                     curPos += n;
+                    
+                    // Demergent Labs has really altered here from the original wasmedge-quickjs code
                     if (n === 0) {
-                        this.emit("end");
-                    } else {
-                        this.push(n ? Buffer.from(buffer.slice(0, n)) : null);
-                        if (curPos >= opts.end) {
-                            this.emit("end");
-                        }
+                        this.push(null);
+                        this.emit('end');
+                    }
+                    else {
+                        this.push(Buffer.from(buffer.slice(0, n)));
                     }
                 } catch (err) {
                     this.destroy(err);
