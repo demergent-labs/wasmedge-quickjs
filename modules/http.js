@@ -785,6 +785,9 @@ class ServerImpl extends EventEmitter {
         // this.#listening = true;
         // this.#listenLoop();
 
+        // Azle uses this to get the underlying node server for implicit canister initialization
+        globalThis._azleNodeServer = this;
+
         return this;
     }
 
