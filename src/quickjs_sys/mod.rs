@@ -606,7 +606,6 @@ impl Context {
         }
     }
 
-    #[deprecated]
     pub fn promise_loop_poll(&mut self) {
         unsafe {
             let rt = self.rt();
